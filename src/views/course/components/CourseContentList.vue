@@ -54,6 +54,9 @@ export default {
       isRefreshing: false
     }
   },
+  created () {
+    // this.onLoad()
+  },
   methods: {
     // 触底时触发，请求下一页数据
     async onLoad () {
