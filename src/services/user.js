@@ -8,3 +8,11 @@ export const userLogin = data => {
     data: new URLSearchParams(data).toString()
   })
 }
+
+// 获取用户基本信息
+export const getInfo = () => {
+  return request({
+    method: 'GET',
+    url: '/front/user/getInfo'
+  })
+}
