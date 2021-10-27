@@ -16,7 +16,7 @@ export default {
 
 <style lang="scss" scoped>
 .layout-footer{
-  display: fixed;
+  position: fixed;
   bottom: 0;
   left: 0;
 }

@@ -22,4 +22,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.course{
+  .course-content{
+    position: fixed;
+    top: 50px;
+    left: 0;
+  }
+  .layout-footer{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+  }
+}
 </style>

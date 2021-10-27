@@ -4,17 +4,17 @@
       <van-swipe class="my-swipe" lazy-render :autoplay="3000" indicator-color="white">
         <van-swipe-item v-for="item in activeAdList" :key="item.id">
             <img :src="item.img">
-            <!-- <van-image :src="item.img"></van-image> -->
         </van-swipe-item>
       </van-swipe>
       <!-- 课程列表 -->
-      <course-content-list></course-content-list>
+      <course-content-list
+      :fetch-data="fetchData"></course-content-list>
   </div>
 </template>
 
 <script>
-import { getAllAds } from '@/services/course'
-import CourseContentList from './CourseContentList.vue'
+import { getAllAds, getQueryCourses } from '@/services/course'
+import CourseContentList from '@/components/CourseContentList.vue'
 
 export default {
   name: 'CourseContent',
@@ -39,6 +39,9 @@ export default {
       })
       console.log(data)
       this.adList = data.content[0].adDTOList
+    },
+    fetchData (options) {
+      return getQueryCourses(options)
     }
   },
   computed: {

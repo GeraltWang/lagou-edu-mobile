@@ -12,6 +12,9 @@ export default {
 
 <style lang="scss" scoped>
 .course-header{
+  position: fixed;
+  top: 0;
+  left: 0;
   height: 50px;
   .van-image{
     width: 162px;
