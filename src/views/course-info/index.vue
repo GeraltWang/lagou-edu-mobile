@@ -1,7 +1,7 @@
 <template>
   <div class="course-info">
     <!-- {{courseId}} -->
-    <van-cell-group :border="false">
+    <van-cell-group :border="false" :style="styleOpts">
         <!-- 头部图片 -->
         <van-cell class="course-img">
             <img :src="course.courseImgUrl">
@@ -23,16 +23,44 @@
             </div>
         </van-cell>
         <!-- 选项卡 -->
-        <van-cell class="course-details"></van-cell>
+        <van-cell class="course-details">
+          <van-tabs sticky scrollspy>
+            <van-tab title="详情">
+              <!-- 课程详情信息在后台是通过富文本编辑器设置的 -->
+              <div v-html="course.courseDescription" class="desc"></div>
+            </van-tab>
+            <van-tab title="内容">
+              <!-- 章节课时组件 -->
+              <course-section
+              v-for="item in sections"
+              :key="item.id"
+              :section-data="item">
+              </course-section>
+            </van-tab>
+          </van-tabs>
+        </van-cell>
     </van-cell-group>
+    <!-- 底部支付功能 -->
+    <van-tabbar v-if="!course.isBuy">
+      <div class="pay-price">
+        <span v-text="course.discountsTag"></span>
+        <span class="discounts">￥{{ course.discounts }}</span>
+        <span>￥ {{ course.price }}</span>
+      </div>
+      <van-button type="primary">立即购买</van-button>
+    </van-tabbar>
   </div>
 </template>
 
 <script>
-import { getCourseById } from '@/services/course'
+import { getCourseById, getSectionAndLesson } from '@/services/course'
+import CourseSection from './components/CourseSectionAndLesson.vue'
 
 export default {
   name: 'CourseInfo',
+  components: {
+    CourseSection
+  },
   props: {
     courseId: {
       type: [String, Number],
@@ -42,18 +70,35 @@ export default {
   data () {
     return {
       // 课程信息
-      course: {}
+      course: {},
+      // 课程章节信息
+      sections: [],
+      // 样式
+      styleOpts: {}
     }
   },
   created () {
     this.loadCourseInfo()
+    this.loadSections()
   },
   methods: {
+    // 请求课程信息
     async loadCourseInfo () {
       const { data } = await getCourseById({ courseId: this.courseId })
       console.log(data)
       if (data.state === 1) {
         this.course = data.content
+        if (data.content.isBuy) {
+          this.styleOpts.bottom = 0
+        }
+      }
+    },
+    // 请求章节课时信息
+    async loadSections () {
+      const { data } = await getSectionAndLesson({ courseId: this.courseId })
+      console.log(data)
+      if (data.state === 1) {
+        this.sections = data.content.courseSectionList
       }
     }
   }
@@ -61,13 +106,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.van-cell-group{
+  width: 100%;
+  position: fixed;
+  top: 0;
+  bottom: 50px;
+  overflow-y: scroll;
+}
 .van-cell{
     padding: 0;
 }
 .course-img{
     height: 280px;
     img{
-        // width: 100%;
         height: 280px;
     }
 }
@@ -100,5 +151,35 @@ export default {
         margin-left: 10px;
         padding: 7px;
     }
+}
+::v-deep .desc{
+  img{
+    display: block;
+    width: 100%;
+  }
+}
+.van-tabbar{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  line-height: 50px;
+  padding: 0 20px;
+  box-sizing: border-box;
+  span{
+    font-size: 18px;
+  }
+  .van-button{
+    width: 40%;
+    height: 80%;
+    span{
+      font-size: 16px;
+    }
+  }
+}
+.discounts{
+  color: #ff7452;
+  font-size: 24px !important;
+  font-weight: bold;
+  margin-right: 10px;
 }
 </style>

@@ -27,6 +27,7 @@ export default {
     position: fixed;
     top: 50px;
     left: 0;
+    right: 0;
   }
   .layout-footer{
     position: fixed;
