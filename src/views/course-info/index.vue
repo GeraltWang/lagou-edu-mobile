@@ -47,7 +47,7 @@
         <span class="discounts">￥{{ course.discounts }}</span>
         <span>￥ {{ course.price }}</span>
       </div>
-      <van-button type="primary">立即购买</van-button>
+      <van-button type="primary" @click="goPay">立即购买</van-button>
     </van-tabbar>
   </div>
 </template>
@@ -99,6 +99,19 @@ export default {
       console.log(data)
       if (data.state === 1) {
         this.sections = data.content.courseSectionList
+      }
+    },
+    goPay () {
+      // 检测是否登录
+      if (this.$store.state.user) {
+        this.$router.push({
+          name: 'pay',
+          params: {
+            courseId: this.courseId
+          }
+        })
+      } else {
+        this.$router.push({ name: 'login', query: { redirect: this.$route.fullPath } })
       }
     }
   }

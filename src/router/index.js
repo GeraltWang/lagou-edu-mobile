@@ -6,22 +6,26 @@ import Course from '@/views/course'
 Vue.use(VueRouter)
 
 const routes = [
+  // 登录
   {
     path: '/login',
     name: 'login',
     component: () => import(/* webpackChunkName: 'login' */'@/views/login/index')
   },
+  // 课程
   {
     path: '/',
     name: 'course',
     component: Course
   },
+  // 学习
   {
     path: '/learn',
     name: 'learn',
     component: () => import(/* webpackChunkName: 'learn' */'@/views/learn/index'),
     meta: { requireAuth: true }
   },
+  // 我的
   {
     path: '/user',
     name: 'user',
@@ -40,6 +44,14 @@ const routes = [
     component: () => import(/* webpackChunkName: 'lesson-video' */'@/views/course-info/video'),
     props: true
   },
+  // 支付
+  {
+    path: '/pay/:courseId',
+    name: 'pay',
+    component: () => import(/* webpackChunkName: 'pay' */'@/views/pay/index'),
+    props: true
+  },
+  // 错误页
   {
     path: '*',
     name: 'error-page',
