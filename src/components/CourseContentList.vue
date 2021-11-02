@@ -38,8 +38,17 @@
 </template>
 
 <script>
+import { PullRefresh, List, Cell, Image, Loading, Toast } from 'vant'
+
 export default {
   name: 'CourseContentList',
+  components: {
+    VanPullRefresh: PullRefresh,
+    VanList: List,
+    VanCell: Cell,
+    VanImage: Image,
+    VanLoading: Loading
+  },
   props: {
     // 用于数据展示的函数
     fetchData: {
@@ -110,7 +119,7 @@ export default {
       }
       console.log(data)
       // 提示
-      this.$toast('刷新完成')
+      Toast('刷新完成')
       // 下拉刷新完毕
       this.isRefreshing = false
       // 页数+1,避免重复请求第一页数据

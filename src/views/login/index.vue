@@ -47,10 +47,18 @@
 </template>
 
 <script>
+import { NavBar, Field, Button, Form, Image, Toast } from 'vant'
 import { userLogin } from '@/services/user'
 
 export default {
   name: 'Login',
+  components: {
+    VanNavBar: NavBar,
+    VanField: Field,
+    VanButton: Button,
+    VanForm: Form,
+    VanImage: Image
+  },
   data () {
     return {
       form: {
@@ -75,11 +83,11 @@ export default {
       if (data.state === 1) {
         // 将用户信息存储到store.state
         this.$store.commit('setUser', data.content)
-        this.$toast.success('登陆成功')
+        Toast.success('登陆成功')
         // 跳转到用户操作的最后一个页面，或者首页
         this.$router.push(this.$route.query.redirect || '/')
       } else {
-        this.$toast.fail(`${data.message}`)
+        Toast.fail(`${data.message}`)
       }
       this.isLoading = false
     }

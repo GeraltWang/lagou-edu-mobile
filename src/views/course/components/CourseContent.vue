@@ -13,13 +13,16 @@
 </template>
 
 <script>
+import { Swipe, SwipeItem } from 'vant'
 import { getAllAds, getQueryCourses } from '@/services/course'
 import CourseContentList from '@/components/CourseContentList.vue'
 
 export default {
   name: 'CourseContent',
   components: {
-    CourseContentList
+    CourseContentList,
+    VanSwipe: Swipe,
+    VanSwipeItem: SwipeItem
   },
   data () {
     return {

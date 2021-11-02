@@ -34,10 +34,6 @@
             <span class="grid-item-value">213</span>
             <span>学分</span>
           </van-grid-item>
-          <!-- <van-grid-item icon="photo-o" text="文字" />
-          <van-grid-item icon="photo-o" text="文字" />
-          <van-grid-item icon="photo-o" text="文字" />
-          <van-grid-item icon="photo-o" text="文字" /> -->
         </van-grid>
       </van-cell>
     </van-cell-group>
@@ -54,13 +50,19 @@
 </template>
 
 <script>
+import { Cell, CellGroup, Grid, GridItem, Image } from 'vant'
 import LayoutFooter from '@/components/LayoutFooter.vue'
 import { getInfo } from '@/services/user'
 
 export default {
   name: 'User',
   components: {
-    LayoutFooter
+    LayoutFooter,
+    VanCell: Cell,
+    VanCellGroup: CellGroup,
+    VanGrid: Grid,
+    VanGridItem: GridItem,
+    VanImage: Image
   },
   data () {
     return {

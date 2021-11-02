@@ -40,18 +40,28 @@
             </van-cell-group>
           </van-radio-group>
         </div>
-        <van-button color="linear-gradient(to right, #faa83e, #fbc546)">￥{{ course.discounts }} 立即支付</van-button>
+        <!-- 支付按钮 -->
+        <!-- <van-button @click="gopay" color="linear-gradient(to right, #faa83e, #fbc546)">￥{{ course.discounts }} 立即支付</van-button> -->
       </van-cell>
     </van-cell-group>
+    <van-button @click="gopay" color="linear-gradient(to right, #faa83e, #fbc546)">￥{{ course.discounts }} 立即支付</van-button>
   </div>
 </template>
 
 <script>
+import { Cell, CellGroup, Radio, RadioGroup, Button, Toast } from 'vant'
 import { getCourseById } from '@/services/course'
-import { createOrder, getPayInfo } from '@/services/pay'
+import { createOrder, getPayInfo, saveOrder, getPayResult } from '@/services/pay'
 
 export default {
   name: 'Pay',
+  components: {
+    VanCell: Cell,
+    VanCellGroup: CellGroup,
+    VanRadio: Radio,
+    VanRadioGroup: RadioGroup,
+    VanButton: Button
+  },
   props: {
     courseId: {
       type: [String, Number],
@@ -61,7 +71,7 @@ export default {
   data () {
     return {
       course: {},
-      radio: 1,
+      radio: 2,
       // 订单号
       orderNumber: null
     }
@@ -90,9 +100,32 @@ export default {
         shopOrderNo: this.orderNumber
       })
       console.log(payInfo)
+    },
+    async gopay () {
+      const { data } = await saveOrder({
+        goodsOrderNo: this.orderNumber,
+        channel: this.radio === '1' ? 'weChat' : 'aliPay',
+        returnUrl: 'http://edufront.lagou.com'
+      })
+      console.log(data)
+      // 接受响应地址并跳转
+      window.location.href = data.content.payUrl
+      const timer = setInterval(async () => {
+        // 发起查询支付结果的请求
+        const { data: payResult } = await getPayResult({
+          orderNo: data.content.orderNo
+        })
+        console.log(payResult)
+        if (payResult.content.status === 2) {
+          clearInterval(timer)
+          Toast.success('支付成功')
+          this.$router.push({ name: 'learn' })
+        }
+      }, 700)
     }
   },
   computed: {
+    // 用户名处理
     userName () {
       return this.$store.state.user.organization.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2')
     }
@@ -102,7 +135,10 @@ export default {
 
 <style lang="scss" scoped>
 .pay{
-  height: 100vh;
+  // height: 100vh;
+  position: absolute;
+  height: 100%;
+  width: 100%;
   .van-cell-group{
     display: flex;
     width: 100%;
@@ -172,6 +208,13 @@ export default {
         }
       }
     }
+  }
+  .van-button{
+    position: absolute;
+    width: 330px;
+    bottom: 10px;
+    left: 50%;
+    margin-left: -165px;
   }
 }
 </style>

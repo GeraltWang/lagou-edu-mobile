@@ -12,10 +12,14 @@
 </template>
 
 <script>
+import { NavBar } from 'vant'
 import { videoPlayInfo } from '@/services/course'
 
 export default {
   name: 'CourseVideo',
+  components: {
+    VanNavBar: NavBar
+  },
   props: {
     lessonId: {
       type: [String, Number],
