@@ -1,6 +1,12 @@
 <template>
   <div class="course-info">
     <!-- {{courseId}} -->
+    <van-nav-bar
+      title="课程"
+      left-text="返回"
+      left-arrow
+      @click-left="$router.go(-1)"
+    />
     <van-cell-group :border="false" :style="styleOpts">
         <!-- 头部图片 -->
         <van-cell class="course-img">
@@ -53,7 +59,7 @@
 </template>
 
 <script>
-import { Cell, CellGroup, Tab, Tabs, Tabbar, Button } from 'vant'
+import { Cell, CellGroup, Tab, Tabs, Tabbar, Button, NavBar } from 'vant'
 import { getCourseById, getSectionAndLesson } from '@/services/course'
 import CourseSection from './components/CourseSectionAndLesson.vue'
 
@@ -66,7 +72,8 @@ export default {
     VanTab: Tab,
     VanTabs: Tabs,
     VanButton: Button,
-    VanTabbar: Tabbar
+    VanTabbar: Tabbar,
+    VanNavBar: NavBar
   },
   props: {
     courseId: {
@@ -129,7 +136,7 @@ export default {
 .van-cell-group{
   width: 100%;
   position: fixed;
-  top: 0;
+  top: 50px;
   bottom: 50px;
   overflow-y: scroll;
 }

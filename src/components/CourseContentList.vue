@@ -87,6 +87,7 @@ export default {
         this.list.push(...data.data.records)
       } else if (data.content && data.content.length !== 0) {
         this.list.push(...data.content)
+        this.finished = true
       }
       // 下次请求下一页
       this.currentPage++
@@ -116,6 +117,7 @@ export default {
         this.list = data.data.records
       } else if (data.content && data.content.length !== 0) {
         this.list = data.content
+        this.finished = true
       }
       console.log(data)
       // 提示
